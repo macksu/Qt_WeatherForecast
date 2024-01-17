@@ -28,5 +28,12 @@ protected:
      void contextMenuEvent(QContextMenuEvent *event);
      void mousePressEvent(QMouseEvent *event);
      void mouseMoveEvent(QMouseEvent *event);
+ private:
+     QString str; //
+     QString Lab_date;
+     QString Lab_date;
+     QString Lab_date;
+     QString Lab_date;
+     QString Lab_date;
 };
 #endif // MAINWINDOW_H

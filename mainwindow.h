@@ -2,7 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-
+#include <QMenu>
+#include <QMouseEvent>
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -30,10 +31,10 @@ protected:
      void mouseMoveEvent(QMouseEvent *event);
  private:
      QString str; //
-     QString Lab_date;
-     QString Lab_date;
-     QString Lab_date;
-     QString Lab_date;
-     QString Lab_date;
+    // QString Lab_date;
+     //QString Lab_date;
+     //QString Lab_date;
+     //QString Lab_date;
+     //QString Lab_date;
 };
 #endif // MAINWINDOW_H

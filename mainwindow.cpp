@@ -41,7 +41,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
- moffset = event->globalPos()-this->pos();
+ moffset = event->globalPos() - this->pos();
 
 }
 

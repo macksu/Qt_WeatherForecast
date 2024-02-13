@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -24,6 +25,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mExitAct,QAction::triggered,this,[=]{
         qApp->exit(0);
     });
+    //控件添加到控件数组
+    mWeekList<<ui->lblWeek0<<ui->lblWeek1<<ui->lblWeek2<<ui->lblWeek3<<ui->lblWeek4<<ui->lblWeek5;
+    mDateList<<ui->lblDate0<<ui->lblDate1<<ui->lblDate2<<ui->lblDate3<<ui->lblDate4<<ui->lblDate5;
+
+
+    //网络请求
     mNetAccessManager = new QNetworkAccessManager(this);
     connect(mNetAccessManager,&QNetworkAccessManager::finished,this,&MainWindow::onReplied);
     //直接在构造中 ，请求天气数据
@@ -73,7 +80,7 @@ void MainWindow::parseJson(QByteArray &byteArray)
          return;
      }
     QJsonObject rootobj = Doc.object();
-    qDebug<<rootobj.value("message").toString();
+    //qDebug<<rootobj.value("message").toString();
     //1.解析日期和城市
     mToday.date = rootobj.value("date").toString();
 
@@ -105,7 +112,8 @@ void MainWindow::parseJson(QByteArray &byteArray)
     //3.解析forcast中5天的数据
     QJsonArray forecastArr = objData.value("forecast").toArray();
     for(int i =0;i<5;i++){
-    QJsonArray objForecast = forecastArr[i].toObject();
+    QJsonObject objForecast = forecastArr[i].toObject();
+
     mDay[i+1].week = objForecast.value("week").toString();
     mDay[i+1].date = objForecast.value("date").toString();
     //天气类型
@@ -123,14 +131,28 @@ void MainWindow::parseJson(QByteArray &byteArray)
     mDay[i+1].fx = objForecast.value("fx").toString();
     mDay[i+1].fl = objForecast.value("fl").toString();
     //污染指数
-    mDay[i+1].aqi = objForecast.value("aqi").toString();
+    mDay[i+1].aqi = objForecast.value("aqi").toInt();
     }
 
     //4.解析今天的数据
     mToday.ganmao = objData.value("ganmao").toString();
-    mToday.wendu = objData.value("wendu").toString();
-    mToday.pm25 = objData.value("pm25").toString();
+    mToday.wendu = objData.value("wendu").toInt();
+    mToday.pm25 = objData.value("pm25").toDouble();
     mToday.quality = objData.value("quality").toString();
+    //5.forcast 中第一个数据也是今天的数据
+    mToday.type = mDay[1].type;
+    mToday.fx = mDay[1].fx;
+    mToday.fl = mDay[1].fl;
+    mToday.high = mDay[1].high;
+    mToday.low = mDay[1].low;
+    //6.更新UI
+    UpdateUI();
+}
+
+void MainWindow::UpdateUI()
+{
+    //ui->lblDate->setText(mToday.date);
+    ui->lblDate0->setText(QDateTime::currentDateTime().toString("yyyy/MM/dd dddd"));
 
 }
 
@@ -150,8 +172,9 @@ void MainWindow::onReplied(QNetworkReply *reply)
          QMessageBox::warning(this,"天气","请求数据失败",QMessageBox::Ok);
      }else{
          QByteArray byteArray = reply->readAll();
-         qDebug()<<"read ALL:"<<byteArray.data();
-         parseJson();
+         //打印所有接受数据
+         //qDebug()<<"read ALL:"<<byteArray.data();
+         parseJson(byteArray);
      }
      reply->deleteLater();
 

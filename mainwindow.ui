@@ -216,7 +216,7 @@ QLabel{
        <height>361</height>
       </rect>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>10</x>
@@ -228,7 +228,7 @@ QLabel{
       <layout class="QGridLayout" name="gridLayout"/>
      </widget>
     </widget>
-    <widget class="QLabel" name="label_20">
+    <widget class="QLabel" name="lblWeek5">
      <property name="geometry">
       <rect>
        <x>710</x>
@@ -241,7 +241,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_14">
+    <widget class="QLabel" name="lblWeek2">
      <property name="geometry">
       <rect>
        <x>518</x>
@@ -254,7 +254,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_18">
+    <widget class="QLabel" name="lblWeek4">
      <property name="geometry">
       <rect>
        <x>646</x>
@@ -267,7 +267,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_10">
+    <widget class="QLabel" name="lblWeek0">
      <property name="geometry">
       <rect>
        <x>390</x>
@@ -280,7 +280,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_12">
+    <widget class="QLabel" name="lblWeek1">
      <property name="geometry">
       <rect>
        <x>454</x>
@@ -293,7 +293,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_13">
+    <widget class="QLabel" name="lblDate1">
      <property name="geometry">
       <rect>
        <x>454</x>
@@ -306,7 +306,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_21">
+    <widget class="QLabel" name="lblDate5">
      <property name="geometry">
       <rect>
        <x>710</x>
@@ -319,7 +319,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_15">
+    <widget class="QLabel" name="lblDate2">
      <property name="geometry">
       <rect>
        <x>518</x>
@@ -332,7 +332,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_11">
+    <widget class="QLabel" name="lblDate0">
      <property name="geometry">
       <rect>
        <x>390</x>
@@ -345,7 +345,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_16">
+    <widget class="QLabel" name="lblWeek3">
      <property name="geometry">
       <rect>
        <x>582</x>
@@ -358,7 +358,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_19">
+    <widget class="QLabel" name="lblDate4">
      <property name="geometry">
       <rect>
        <x>646</x>
@@ -371,7 +371,7 @@ QLabel{
       <string>TextLabel</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_17">
+    <widget class="QLabel" name="lblDate3">
      <property name="geometry">
       <rect>
        <x>582</x>

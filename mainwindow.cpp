@@ -26,9 +26,17 @@ MainWindow::MainWindow(QWidget *parent)
         qApp->exit(0);
     });
     //控件添加到控件数组
-    mWeekList<<ui->lblWeek0<<ui->lblWeek1<<ui->lblWeek2<<ui->lblWeek3<<ui->lblWeek4<<ui->lblWeek5;
-    mDateList<<ui->lblDate0<<ui->lblDate1<<ui->lblDate2<<ui->lblDate3<<ui->lblDate4<<ui->lblDate5;
+    mWeekList<<ui->lblWeek0;
+    mWeekList<<ui->lblWeek1;
+    //<<ui->lblWeek2<<ui->lblWeek3<<ui->lblWeek4<<ui->lblWeek5;
+    mDateList<<ui->lblDate0;
+    //<<ui->lblDate1<<ui->lblDate2<<ui->lblDate3<<ui->lblDate4<<ui->lblDate5;
 
+    //污染指数
+    //mAqiList<<ui->lblAqi0<<ui->lblAqi1<<ui->lblAqi2<<ui->lblAqi3<<ui->lblAqi4<<ui->lblAqi5;
+    //风力和风向
+    //mFxList<<ui->lblFx0<<ui->lblFx1<<ui->lblFx2<<ui->lblFx3<<ui->lblFx4<<ui->lblFx5;
+    //mFlList<<ui->lblFl0<<ui->lblFl1<<ui->lblFl2<<ui->lblFl3<ui->lblFl4<<ui->lblFl5;
 
     //网络请求
     mNetAccessManager = new QNetworkAccessManager(this);
@@ -173,7 +181,7 @@ void MainWindow::onReplied(QNetworkReply *reply)
      }else{
          QByteArray byteArray = reply->readAll();
          //打印所有接受数据
-         //qDebug()<<"read ALL:"<<byteArray.data();
+         qDebug()<<"read ALL:"<<byteArray.data();
          parseJson(byteArray);
      }
      reply->deleteLater();

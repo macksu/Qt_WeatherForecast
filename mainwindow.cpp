@@ -160,8 +160,8 @@ void MainWindow::parseJson(QByteArray &byteArray)
 void MainWindow::UpdateUI()
 {
     //ui->lblDate->setText(mToday.date);
-    ui->lblDate0->setText(QDateTime::currentDateTime().toString("yyyy/MM/dd dddd"));
-
+    ui->lblDate0->setText(QDateTime::fromString(mToday.date,"MMdd").toString("MM/dd")+" "+mDay[1].week);
+    ui->lblCIty->setText(mToday.city);
 }
 
 void MainWindow::onReplied(QNetworkReply *reply)

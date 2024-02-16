@@ -11,6 +11,8 @@
 #include <QList>
 #include <QString>
 #include <QLabel>
+#include <QList>
+#include <QMap>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -50,6 +52,8 @@ private:
     //风力和风向
     QList<QLabel*>mFxList;
     QList<QLabel*>mFlList;
+    //图片
+    QMap<QString,QString>mTypeMap;
 
 protected:
      void contextMenuEvent(QContextMenuEvent *event);

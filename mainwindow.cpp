@@ -4,6 +4,8 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QStringList>
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -26,17 +28,19 @@ MainWindow::MainWindow(QWidget *parent)
         qApp->exit(0);
     });
     //控件添加到控件数组
-    mWeekList<<ui->lblWeek0;
-    mWeekList<<ui->lblWeek1;
-    //<<ui->lblWeek2<<ui->lblWeek3<<ui->lblWeek4<<ui->lblWeek5;
-    mDateList<<ui->lblDate0;
-    //<<ui->lblDate1<<ui->lblDate2<<ui->lblDate3<<ui->lblDate4<<ui->lblDate5;
+    mWeekList<<ui->lblWeek0<<ui->lblWeek1<<ui->lblWeek2<<ui->lblWeek3<<ui->lblWeek4<<ui->lblWeek5;
+    mDateList<<ui->lblDate0<<ui->lblDate1<<ui->lblDate2<<ui->lblDate3<<ui->lblDate4<<ui->lblDate5;
+
+    mTypeList<<ui->lblType0<<ui->lblType1<<ui->lblType2<<ui->lblType3<<ui->lblType4<<ui->lblType5;
+    mTypeIconList<<ui->lblMap0<<ui->lblMap1<<ui->lblMap2<<ui->lblMap3<<ui->lblMap4<<ui->lblMap5;
 
     //污染指数
-    //mAqiList<<ui->lblAqi0<<ui->lblAqi1<<ui->lblAqi2<<ui->lblAqi3<<ui->lblAqi4<<ui->lblAqi5;
+    mAqiList<<ui->lblQuality0<<ui->lblQuality1<<ui->lblQuality2<<ui->lblQuality3<<ui->lblQuality4<<ui->lblQuality5;
     //风力和风向
-    //mFxList<<ui->lblFx0<<ui->lblFx1<<ui->lblFx2<<ui->lblFx3<<ui->lblFx4<<ui->lblFx5;
-    //mFlList<<ui->lblFl0<<ui->lblFl1<<ui->lblFl2<<ui->lblFl3<ui->lblFl4<<ui->lblFl5;
+    mFxList<<ui->lblFx0<<ui->lblFx1<<ui->lblFx2<<ui->lblFx3<<ui->lblFx4<<ui->lblFx5;
+    mFlList<<ui->lblFl0<<ui->lblFl1<<ui->lblFl2<<ui->lblFl3<<ui->lblFl4<<ui->lblFl5;
+    //图片
+    mTypeMap.insert("晴",":/res/type/Qing.png");
 
     //网络请求
     mNetAccessManager = new QNetworkAccessManager(this);
@@ -64,13 +68,13 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event)
 
 void MainWindow::mousePressEvent(QMouseEvent *event)
 {
- moffset = event->globalPos() - this->pos();
+    moffset = (event->globalPosition() - this->pos()).toPoint();
 
 }
 
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
 {
- this->move(event->globalPos()-moffset);
+    this->move((event->globalPosition()-moffset).toPoint());
 }
 
 void MainWindow::getWeatherInfo(QString CityCode)
@@ -159,9 +163,65 @@ void MainWindow::parseJson(QByteArray &byteArray)
 
 void MainWindow::UpdateUI()
 {
-    //ui->lblDate->setText(mToday.date);
-    ui->lblDate0->setText(QDateTime::fromString(mToday.date,"MMdd").toString("MM/dd")+" "+mDay[1].week);
+   //1.更新城市和日期
+    ui->lblDate->setText(QDateTime::fromString(mToday.date,"yyyyMMdd").toString("yyyy/MM/dd")+"        "+mDay[1].week);
     ui->lblCIty->setText(mToday.city);
+   //2.更新今天
+    ui->lblTypeIcon->setPixmap(mTypeMap.value(mToday.type));
+    ui->lblTemp0->setText(QString::number(mToday.wendu)+"℃");
+    ui->lblTemp->setText(mToday.type);
+
+    ui->lblGanmao->setText("感冒指数："+mToday.ganmao);
+    ui->lblFx->setText(mToday.fx);
+    ui->lblFl->setText(mToday.fl);
+    ui->lblPm25->setText(("pm2.5\n") +QString::number(mToday.pm25));
+    ui->lblShidu->setText(("湿度\n") +mToday.shidu);
+    ui->lblQuality->setText("湿度\n"+mToday.quality);
+   //3.更新6天
+    for(int i = 0;i<6;i++){
+       //更新日期和时间
+    mWeekList[i]->setText("周"+mDay[i].week.right(1));
+    ui->lblWeek0->setText("昨天");
+    ui->lblWeek1->setText("今天");
+    ui->lblWeek2->setText("明天");
+
+    QStringList ymdList;
+    if (!mDay[i].date.isEmpty() && mDay[i].date.contains("-")) {
+        ymdList = mDay[i].date.split("-");
+        mDateList[i]->setText(ymdList[1]+""+ymdList[2]);
+    } else {
+        QString date = mDay[i].date;
+        mDateList[i]->setText(date);
+
+    }
+    //更新天气类型
+    mTypeList[i]->setText(mDay[i].type);
+    //更新天气类型图片
+    //mTypeIconList[i]->setPixMap(mTypeMap[i].value)
+    //更新天气质量
+    if(mDay[i].aqi>=0&&mDay[i].aqi<=50){
+        mAqiList[i]->setText("优");
+        mAqiList[i]->setStyleSheet("background-color:rgb(121,184,0)");
+    }else if(mDay[i].aqi>50&&mDay[i].aqi<=100){
+        mAqiList[i]->setText("良");
+        mAqiList[i]->setStyleSheet("background-color:rgb(255,187,23)");
+    }else if(mDay[i].aqi>100&&mDay[i].aqi<=150){
+        mAqiList[i]->setText("轻度污染");
+        mAqiList[i]->setStyleSheet("background-color:rgb(255,87,97)");
+    }else if(mDay[i].aqi>150&&mDay[i].aqi<=200){
+        mAqiList[i]->setText("中度污染");
+        mAqiList[i]->setStyleSheet("background-color:rgb(235,17,27)");
+    }else if(mDay[i].aqi>200&&mDay[i].aqi<=250){
+        mAqiList[i]->setText("重度污染");
+        mAqiList[i]->setStyleSheet("background-color:rgb(170,0,0)");
+    }else {
+        mAqiList[i]->setText("严重");
+        mAqiList[i]->setStyleSheet("background-color:rgb(110,0,0)");
+    }
+    //更新风力风向
+    mFxList[i]->setText(mDay[i].fx);
+    mFlList[i]->setText(mDay[i].fl);
+    }
 }
 
 void MainWindow::onReplied(QNetworkReply *reply)

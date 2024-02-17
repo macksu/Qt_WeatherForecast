@@ -5,7 +5,7 @@
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QStringList>
-
+#include "weathertool.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -42,12 +42,16 @@ MainWindow::MainWindow(QWidget *parent)
     //图片
     mTypeMap.insert("晴",":/res/type/Qing.png");
 
+    //搜索图标显示
+
+    //pbt_Search->setIcon(QIcon(":/res/search.png"));
     //网络请求
     mNetAccessManager = new QNetworkAccessManager(this);
     connect(mNetAccessManager,&QNetworkAccessManager::finished,this,&MainWindow::onReplied);
     //直接在构造中 ，请求天气数据
     //"101010100" 是北京的城市编码
-    getWeatherInfo("101010100");
+    getWeatherInfo("北京市");
+     //getWeatherInfo("101010100");
 }
 
 MainWindow::~MainWindow()
@@ -77,8 +81,9 @@ void MainWindow::mouseMoveEvent(QMouseEvent *event)
     this->move((event->globalPosition()-moffset).toPoint());
 }
 
-void MainWindow::getWeatherInfo(QString CityCode)
+void MainWindow::getWeatherInfo(QString name)
 {
+    QString CityCode =  weathertool::getCityCode(name);
      QUrl url("http://t.weather.itboy.net/api/weather/city/"+CityCode);
      mNetAccessManager->get(QNetworkRequest(url));
 
@@ -197,7 +202,7 @@ void MainWindow::UpdateUI()
     //更新天气类型
     mTypeList[i]->setText(mDay[i].type);
     //更新天气类型图片
-    //mTypeIconList[i]->setPixMap(mTypeMap[i].value)
+    mTypeIconList[i]->setPixmap(mTypeMap[mDay[i].type]);
     //更新天气质量
     if(mDay[i].aqi>=0&&mDay[i].aqi<=50){
         mAqiList[i]->setText("优");
@@ -241,7 +246,7 @@ void MainWindow::onReplied(QNetworkReply *reply)
      }else{
          QByteArray byteArray = reply->readAll();
          //打印所有接受数据
-         qDebug()<<"read ALL:"<<byteArray.data();
+         //qDebug()<<"read ALL:"<<byteArray.data();
          parseJson(byteArray);
      }
      reply->deleteLater();

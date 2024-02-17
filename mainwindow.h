@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QList>
 #include <QMap>
+#include <QPushButton>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

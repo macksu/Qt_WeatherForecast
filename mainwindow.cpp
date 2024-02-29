@@ -246,7 +246,7 @@ void MainWindow::onReplied(QNetworkReply *reply)
      }else{
          QByteArray byteArray = reply->readAll();
          //打印所有接受数据
-         //qDebug()<<"read ALL:"<<byteArray.data();
+         qDebug()<<"read ALL:"<<byteArray.data();
          parseJson(byteArray);
      }
      reply->deleteLater();
